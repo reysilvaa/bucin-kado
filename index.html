@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kado Spesial 3D Untukmu, Sayang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff4b8d;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+
+        .scene {
+            width: 200px;
+            height: 200px;
+            perspective: 600px;
+            margin: 0 auto;
+        }
+
+        .gift-box {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: translateZ(-100px);
+            transition: transform 1s;
+            cursor: pointer;
+        }
+
+        .gift-box.is-spinning {
+            animation: spinGift 8s infinite linear;
+        }
+
+        @keyframes spinGift {
+            0% { transform: translateZ(-100px) rotateY(0); }
+            100% { transform: translateZ(-100px) rotateY(360deg); }
+        }
+
+        .gift-box:hover {
+            animation-play-state: paused;
+        }
+
+        .gift-box .side {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: #ff69b4;
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            backface-visibility: hidden;
+        }
+
+        .gift-box .front  { transform: rotateY(0deg) translateZ(100px); }
+        .gift-box .right  { transform: rotateY(90deg) translateZ(100px); }
+        .gift-box .back   { transform: rotateY(180deg) translateZ(100px); }
+        .gift-box .left   { transform: rotateY(-90deg) translateZ(100px); }
+        .gift-box .top    { transform: rotateX(90deg) translateZ(100px); }
+        .gift-box .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+        .gift-box .side::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="white" stroke-width="2"/></svg>');
+            background-size: 40px 40px;
+            opacity: 0.3;
+        }
+
+        .ribbon {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            transform-style: preserve-3d;
+        }
+
+        .ribbon div {
+            position: absolute;
+            width: 40px;
+            height: 200px;
+            background: #ffd700;
+        }
+
+        .ribbon .vertical {
+            left: 80px;
+            transform: translateZ(100px);
+        }
+
+        .ribbon .horizontal {
+            width: 200px;
+            height: 40px;
+            top: 80px;
+            transform: translateZ(100px);
+        }
+
+        .gift-content {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff69b4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            opacity: 0;
+            animation: float-up 4s linear infinite;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .scene, .gift-box, .gift-box .side { width: 150px; height: 150px; }
+            .gift-box .front, .gift-box .back, .gift-box .left, .gift-box .right { transform: translateZ(75px); }
+            .gift-box .top, .gift-box .bottom { transform: translateY(75px); }
+            .ribbon .vertical { left: 55px; height: 150px; }
+            .ribbon .horizontal { width: 150px; top: 55px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Kemana kita hari ini?</h1>
+        </header>
+        <main>
+            <div class="scene">
+                <div class="gift-box is-spinning" id="giftBox">
+                    <div class="ribbon">
+                        <div class="vertical"></div>
+                        <div class="horizontal"></div>
+                    </div>
+                    <div class="side front">❤️</div>
+                    <div class="side back">😘</div>
+                    <div class="side right">💖</div>
+                    <div class="side left">💕</div>
+                    <div class="side top">🎁</div>
+                    <div class="side bottom">💝</div>
+                </div>
+            </div>
+            <div class="gift-content" id="giftContent">
+                <p class="message" id="message"></p>
+            </div>
+        </main>
+    </div>
+    <div class="hearts" id="hearts"></div>
+
+    <script>
+        const giftBox = document.getElementById('giftBox');
+        const giftContent = document.getElementById('giftContent');
+        const message = document.getElementById('message');
+        const heartsContainer = document.getElementById('hearts');
+
+        const messages = [
+            "Di Mbah Aja 😊",
+            "Maen Di Alam-alam. 🌊🌌",
+            "Ke Mbatu wkwkw😁✌️",
+            "Maen kemana aja. 🧩❤️",
+            "Kulineran ayyy. 💑",
+            "Ngikut kamu deh ayyy. 🌟"
+        ];
+
+        let isOpen = false;
+
+        function toggleGift() {
+            if (!isOpen) {
+                openGift();
+            } else {
+                closeGift();
+            }
+            isOpen = !isOpen;
+        }
+
+        function openGift() {
+            giftBox.style.animation = 'none';
+            giftBox.style.transform = 'translateZ(-100px) rotateX(180deg)';
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            message.textContent = messages[randomIndex];
+            giftContent.style.display = 'block';
+            createHearts();
+        }
+
+        function closeGift() {
+            giftBox.style.animation = 'spinGift 8s infinite linear';
+            giftBox.style.transform = 'translateZ(-100px) rotateX(0deg)';
+            giftContent.style.display = 'none';
+        }
+
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    heartsContainer.appendChild(heart);
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 300);
+            }
+        }
+
+        giftBox.addEventListener('click', toggleGift);
+    </script>
+</body>
+</html>
